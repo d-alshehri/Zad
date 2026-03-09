@@ -234,6 +234,38 @@ const translations: Record<string, Record<Language, string>> = {
   "admin.cancel": {
     en: "Cancel",
     ar: "إلغاء"
+  },
+  "admin.access": {
+    en: "Admin Access",
+    ar: "دخول الإدارة"
+  },
+  "admin.accessDesc": {
+    en: "Enter the admin password to access the dashboard.",
+    ar: "أدخل كلمة مرور المدير للوصول إلى لوحة التحكم."
+  },
+  "admin.prototypeNote": {
+    en: "This is a prototype UI — not connected to a real backend.",
+    ar: "هذه واجهة تجريبية — غير متصلة بخادم حقيقي."
+  },
+  "admin.totalSources": {
+    en: "Total Sources",
+    ar: "إجمالي المصادر"
+  },
+  "admin.recentlyAdded": {
+    en: "Recently Added",
+    ar: "أُضيفت مؤخراً"
+  },
+  "admin.categories": {
+    en: "Categories",
+    ar: "التصنيفات"
+  },
+  "admin.sourceDeleted": {
+    en: "Source deleted",
+    ar: "تم حذف المصدر"
+  },
+  "admin.sourceAdded": {
+    en: "Source added",
+    ar: "تم إضافة المصدر"
   }
 };
 
