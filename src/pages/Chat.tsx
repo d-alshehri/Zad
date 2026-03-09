@@ -108,45 +108,48 @@ const Chat = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-6 max-w-3xl">
-        {/* Hero */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl shadow-xl mb-4">
-            <Sparkles className="w-8 h-8 text-primary-foreground" />
+      <div className="container mx-auto px-6 py-12 max-w-4xl">
+        {/* Premium Hero Section */}
+        <div className="text-center mb-12 animate-fade-in">
+          <div className="relative inline-flex items-center justify-center mb-6">
+            <div className="w-20 h-20 gradient-hero rounded-3xl flex items-center justify-center shadow-xl animate-scale-in">
+              <Sparkles className="w-10 h-10 text-white" />
+            </div>
+            <div className="absolute -inset-3 gradient-hero rounded-3xl opacity-20 blur-xl animate-pulse"></div>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent mb-2">
+          <h1 className="text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent mb-4 text-balance">
             {t("app.name")}
           </h1>
-          <p className="text-muted-foreground">{t("chat.disclaimer")}</p>
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">{t("chat.disclaimer")}</p>
         </div>
 
-        {/* Chat Area */}
-        <div className="flex flex-col h-[calc(100vh-22rem)]">
-          <div className="flex-1 overflow-y-auto space-y-4 mb-4 px-1">
+        {/* Enhanced Chat Area */}
+        <div className="flex flex-col h-[calc(100vh-28rem)]">
+          <div className="flex-1 overflow-y-auto space-y-6 mb-6 px-2">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.type === "user" ? (isRTL ? "justify-start" : "justify-end") : (isRTL ? "justify-end" : "justify-start")}`}
+                className={`flex ${message.type === "user" ? (isRTL ? "justify-start" : "justify-end") : (isRTL ? "justify-end" : "justify-start")} animate-fade-in`}
               >
-                <Card className={`max-w-[85%] shadow-lg border-0 ${
+                <Card className={`max-w-[85%] shadow-medium border-0 overflow-hidden ${
                   message.type === "user" 
-                    ? "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground" 
-                    : "bg-card"
+                    ? "gradient-primary text-white" 
+                    : "bg-card shadow-soft"
                 }`}>
-                  <CardContent className="p-4">
-                    <p className="text-sm leading-relaxed">
+                  <CardContent className="p-6">
+                    <p className={`text-sm leading-relaxed ${message.type === "user" ? "text-white" : "text-foreground"}`}>
                       {message.content}
                     </p>
                     
                     {message.sources && message.sources.length > 0 && (
-                      <div className="mt-4 pt-3 border-t border-border/20">
-                        <div className="flex items-center gap-2 text-xs mb-2 opacity-70">
-                          <BookOpen className="h-3 w-3" />
+                      <div className="mt-6 pt-4 border-t border-white/20">
+                        <div className="flex items-center gap-2 text-xs mb-3 opacity-90">
+                          <BookOpen className="h-4 w-4" />
                           <span className="font-semibold">{t("chat.sources")}:</span>
                         </div>
-                        <div className="space-y-1">
+                        <div className="space-y-2">
                           {message.sources.map((source, index) => (
-                            <div key={index} className="text-xs bg-secondary/20 rounded-lg px-3 py-1.5">
+                            <div key={index} className="text-xs bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/20">
                               {source}
                             </div>
                           ))}
@@ -159,16 +162,16 @@ const Chat = () => {
             ))}
             
             {isLoading && (
-              <div className={`flex ${isRTL ? "justify-end" : "justify-start"}`}>
-                <Card className="bg-card shadow-lg border-0">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-secondary rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
-                        <div className="w-2 h-2 bg-secondary rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+              <div className={`flex ${isRTL ? "justify-end" : "justify-start"} animate-fade-in`}>
+                <Card className="bg-card shadow-soft border-0">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-4">
+                      <div className="flex gap-1.5">
+                        <div className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce"></div>
+                        <div className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
+                        <div className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
                       </div>
-                      <span className="text-sm text-muted-foreground">{t("chat.searching")}</span>
+                      <span className="text-sm text-muted-foreground font-medium">{t("chat.searching")}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -176,15 +179,15 @@ const Chat = () => {
             )}
           </div>
           
-          {/* Input */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
+          {/* Enhanced Input Section */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
               <Input
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder={t("chat.placeholder")}
-                className="flex-1 h-12 bg-card border-2 border-border/50 focus:border-primary shadow-lg"
+                className="flex-1 h-14 bg-card border-2 border-border/50 focus:border-primary shadow-medium rounded-2xl text-base px-6 transition-all duration-200"
                 disabled={isLoading}
                 dir={isRTL ? "rtl" : "ltr"}
               />
@@ -192,13 +195,13 @@ const Chat = () => {
                 onClick={handleSendMessage} 
                 disabled={!inputValue.trim() || isLoading}
                 size="lg"
-                className="h-12 w-12 bg-gradient-to-br from-primary to-secondary hover:opacity-90 shadow-lg"
+                className="h-14 w-14 gradient-primary hover:shadow-large transition-all duration-300 rounded-2xl"
               >
                 <Send className={`h-5 w-5 ${isRTL ? "rotate-180" : ""}`} />
               </Button>
             </div>
             
-            <Button asChild variant="outline" className="w-full border-secondary/50 text-secondary-foreground hover:bg-secondary/10">
+            <Button asChild variant="outline" className="w-full h-12 border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50 rounded-2xl font-medium transition-all duration-200 shadow-soft">
               <Link to="/sources" className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
                 {t("chat.viewSources")}
