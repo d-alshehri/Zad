@@ -1,90 +1,79 @@
 import Layout from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, FileText, Globe } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Link } from "react-router-dom";
+import { BookOpen, FileText, Globe, ArrowLeft, ArrowRight } from "lucide-react";
 
 interface Source {
   id: string;
-  title: string;
-  author: string;
+  title: { en: string; ar: string };
+  author: { en: string; ar: string };
   type: "quran" | "hadith" | "tafsir" | "fiqh" | "fatwa";
-  description: string;
-  language: string;
-  addedDate: string;
+  description: { en: string; ar: string };
 }
 
 const mockSources: Source[] = [
   {
     id: "1",
-    title: "The Holy Quran",
-    author: "Divine Revelation",
+    title: { en: "The Holy Quran", ar: "القرآن الكريم" },
+    author: { en: "Divine Revelation", ar: "الوحي الإلهي" },
     type: "quran",
-    description: "Complete Quran with multiple translations including Sahih International, Yusuf Ali, and Pickthall.",
-    language: "Arabic, English",
-    addedDate: "2024-01-01"
+    description: { 
+      en: "Complete Quran with multiple translations including Sahih International and Yusuf Ali.",
+      ar: "القرآن الكريم كاملاً مع ترجمات متعددة تشمل صحيح الدولية ويوسف علي."
+    }
   },
   {
     id: "2",
-    title: "Sahih al-Bukhari",
-    author: "Imam al-Bukhari",
+    title: { en: "Sahih al-Bukhari", ar: "صحيح البخاري" },
+    author: { en: "Imam al-Bukhari", ar: "الإمام البخاري" },
     type: "hadith",
-    description: "The most authentic collection of Prophetic traditions, containing over 7,000 hadith.",
-    language: "Arabic, English",
-    addedDate: "2024-01-01"
+    description: { 
+      en: "The most authentic collection of Prophetic traditions with over 7,000 hadith.",
+      ar: "أصح مجموعة من الأحاديث النبوية تحتوي على أكثر من 7000 حديث."
+    }
   },
   {
     id: "3",
-    title: "Sahih Muslim",
-    author: "Imam Muslim",
+    title: { en: "Sahih Muslim", ar: "صحيح مسلم" },
+    author: { en: "Imam Muslim", ar: "الإمام مسلم" },
     type: "hadith",
-    description: "Second most authentic hadith collection, complementing Sahih al-Bukhari.",
-    language: "Arabic, English",
-    addedDate: "2024-01-01"
+    description: { 
+      en: "Second most authentic hadith collection, complementing Sahih al-Bukhari.",
+      ar: "ثاني أصح مجموعة حديث، مكملة لصحيح البخاري."
+    }
   },
   {
     id: "4",
-    title: "Tafsir Ibn Kathir",
-    author: "Ibn Kathir",
+    title: { en: "Tafsir Ibn Kathir", ar: "تفسير ابن كثير" },
+    author: { en: "Ibn Kathir", ar: "ابن كثير" },
     type: "tafsir",
-    description: "Classical Quranic commentary widely accepted by Sunni scholars for its authenticity and clarity.",
-    language: "Arabic, English",
-    addedDate: "2024-01-02"
+    description: { 
+      en: "Classical Quranic commentary widely accepted for authenticity and clarity.",
+      ar: "تفسير قرآني كلاسيكي مقبول على نطاق واسع لأصالته ووضوحه."
+    }
   },
   {
     id: "5",
-    title: "Sunan Abu Dawud",
-    author: "Abu Dawud",
+    title: { en: "Sunan Abu Dawud", ar: "سنن أبي داود" },
+    author: { en: "Abu Dawud", ar: "أبو داود" },
     type: "hadith",
-    description: "Collection of hadith focusing on legal matters and Islamic jurisprudence.",
-    language: "Arabic, English",
-    addedDate: "2024-01-02"
+    description: { 
+      en: "Collection focusing on legal matters and Islamic jurisprudence.",
+      ar: "مجموعة تركز على المسائل القانونية والفقه الإسلامي."
+    }
   },
   {
     id: "6",
-    title: "Fiqh al-Zakat",
-    author: "Yusuf al-Qaradawi",
-    type: "fiqh",
-    description: "Comprehensive contemporary work on the Islamic law of charity and wealth redistribution.",
-    language: "Arabic, English",
-    addedDate: "2024-01-03"
-  },
-  {
-    id: "7",
-    title: "IslamQA Fatwa Database",
-    author: "Sheikh Muhammad Salih al-Munajjid",
-    type: "fatwa",
-    description: "Authentic Islamic rulings on contemporary issues from qualified scholars.",
-    language: "Arabic, English",
-    addedDate: "2024-01-05"
-  },
-  {
-    id: "8",
-    title: "Jami' at-Tirmidhi",
-    author: "Imam at-Tirmidhi",
+    title: { en: "Jami' at-Tirmidhi", ar: "جامع الترمذي" },
+    author: { en: "Imam at-Tirmidhi", ar: "الإمام الترمذي" },
     type: "hadith",
-    description: "One of the six major hadith collections, known for its detailed hadith classification.",
-    language: "Arabic, English",
-    addedDate: "2024-01-07"
+    description: { 
+      en: "One of the six major hadith collections with detailed classifications.",
+      ar: "أحد مجاميع الحديث الستة الرئيسية مع تصنيفات مفصلة."
+    }
   }
 ];
 
@@ -96,110 +85,69 @@ const typeIcons = {
   fatwa: Globe
 };
 
-const typeColors = {
-  quran: "default" as const,
-  hadith: "secondary" as const, 
-  tafsir: "outline" as const,
-  fiqh: "secondary" as const,
-  fatwa: "destructive" as const
-};
-
 const Sources = () => {
-  const sourcesByType = mockSources.reduce((acc, source) => {
-    if (!acc[source.type]) {
-      acc[source.type] = [];
-    }
-    acc[source.type].push(source);
-    return acc;
-  }, {} as Record<string, Source[]>);
-
-  const typeLabels = {
-    quran: "Holy Quran",
-    hadith: "Hadith Collections", 
-    tafsir: "Quran Commentary (Tafsir)",
-    fiqh: "Islamic Jurisprudence",
-    fatwa: "Contemporary Rulings"
-  };
+  const { language, t, isRTL } = useLanguage();
+  const ArrowIcon = isRTL ? ArrowRight : ArrowLeft;
 
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Approved Islamic Sources</h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              All answers from our Islamic Knowledge Assistant are based exclusively on these 
-              authenticated and scholar-approved sources. No general AI knowledge is used.
+        <div className="max-w-4xl mx-auto">
+          {/* Back Button */}
+          <Button asChild variant="ghost" className="mb-6">
+            <Link to="/" className="flex items-center gap-2">
+              <ArrowIcon className="h-4 w-4" />
+              {t("sources.back")}
+            </Link>
+          </Button>
+
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-xl shadow-lg mb-4">
+              <BookOpen className="w-7 h-7 text-primary-foreground" />
+            </div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-3">
+              {t("sources.title")}
+            </h1>
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              {t("sources.description")}
             </p>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
-            {Object.entries(typeLabels).map(([type, label]) => {
-              const count = sourcesByType[type]?.length || 0;
-              const Icon = typeIcons[type as keyof typeof typeIcons];
+          <div className="grid md:grid-cols-2 gap-4">
+            {mockSources.map((source) => {
+              const Icon = typeIcons[source.type];
               
               return (
-                <Card key={type} className="text-center">
-                  <CardContent className="p-4">
-                    <Icon className="h-8 w-8 mx-auto mb-2 text-primary" />
-                    <div className="text-2xl font-bold">{count}</div>
-                    <div className="text-sm text-muted-foreground">{label}</div>
+                <Card key={source.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow bg-card/80 backdrop-blur-sm">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="p-2 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg">
+                        <Icon className="h-5 w-5 text-primary" />
+                      </div>
+                      <Badge variant="secondary" className="bg-secondary/20 text-secondary-foreground">
+                        {source.type}
+                      </Badge>
+                    </div>
+                    <CardTitle className="text-lg mt-2">{source.title[language]}</CardTitle>
+                    <CardDescription className="font-medium text-primary/80">
+                      {source.author[language]}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">
+                      {source.description[language]}
+                    </p>
                   </CardContent>
                 </Card>
               );
             })}
           </div>
 
-          {/* Sources by Category */}
-          <div className="space-y-8">
-            {Object.entries(sourcesByType).map(([type, sources]) => (
-              <div key={type}>
-                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                  {(() => {
-                    const Icon = typeIcons[type as keyof typeof typeIcons];
-                    return <Icon className="h-6 w-6 text-primary" />;
-                  })()}
-                  {typeLabels[type as keyof typeof typeLabels]} ({sources.length})
-                </h2>
-                
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {sources.map((source) => (
-                    <Card key={source.id} className="h-full">
-                      <CardHeader>
-                        <div className="flex justify-between items-start mb-2">
-                          <Badge variant={typeColors[source.type as keyof typeof typeColors]}>
-                            {source.type.toUpperCase()}
-                          </Badge>
-                        </div>
-                        <CardTitle className="text-lg">{source.title}</CardTitle>
-                        <CardDescription className="font-medium">
-                          {source.author}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm text-muted-foreground mb-3">
-                          {source.description}
-                        </p>
-                        <div className="flex justify-between items-center text-xs text-muted-foreground">
-                          <span>Languages: {source.language}</span>
-                          <span>Added: {source.addedDate}</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Important Notice */}
-          <div className="mt-12 p-6 bg-accent/50 rounded-lg border-l-4 border-primary">
-            <h3 className="font-semibold text-lg mb-2">Source Verification Process</h3>
-            <p className="text-muted-foreground">
-              All sources in this database have been reviewed and approved by qualified Islamic scholars. 
-              We only include texts that are widely accepted by the mainstream Islamic scholarly community. 
-              Sources are regularly reviewed and updated to maintain accuracy and authenticity.
+          <div className="mt-10 p-6 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-2xl border border-primary/10">
+            <p className="text-center text-sm text-muted-foreground">
+              {language === "en" 
+                ? "All sources are reviewed and approved by qualified Islamic scholars."
+                : "جميع المصادر مراجعة ومعتمدة من قبل علماء إسلاميين مؤهلين."}
             </p>
           </div>
         </div>

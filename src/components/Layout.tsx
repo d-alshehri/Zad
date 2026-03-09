@@ -1,86 +1,63 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Globe } from "lucide-react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
-  
-  const navItems = [
-    { path: "/", label: "Home" },
-    { path: "/chat", label: "Ask Assistant" },
-    { path: "/sources", label: "Sources" },
-    { path: "/about", label: "About" },
-    { path: "/admin", label: "Admin" },
-  ];
+  const { language, setLanguage, t, isRTL } = useLanguage();
 
-  const NavLinks = ({ mobile = false }: { mobile?: boolean }) => (
-    <>
-      {navItems.map((item) => (
-        <Link
-          key={item.path}
-          to={item.path}
-          className={`
-            ${mobile ? 'block py-2' : 'px-3 py-2'}
-            rounded-md text-sm font-medium transition-colors
-            ${location.pathname === item.path 
-              ? 'bg-accent text-accent-foreground' 
-              : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-            }
-          `}
-        >
-          {item.label}
-        </Link>
-      ))}
-    </>
-  );
+  const toggleLanguage = () => {
+    setLanguage(language === "en" ? "ar" : "en");
+  };
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
+    <div className={`min-h-screen bg-gradient-to-br from-background via-background to-accent/20 ${isRTL ? 'font-arabic' : ''}`}>
+      {/* Minimal Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-md border-b">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">IKA</span>
+          <div className="flex items-center justify-between h-14">
+            <Link to="/" className="flex items-center gap-2">
+              <div className="w-9 h-9 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-primary-foreground font-bold text-sm">☪</span>
               </div>
-              <span className="font-semibold text-lg">Islamic Knowledge Assistant</span>
+              <span className="font-semibold text-lg hidden sm:block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                {t("app.name")}
+              </span>
             </Link>
             
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-1">
-              <NavLinks />
-            </nav>
-            
-            {/* Mobile Navigation */}
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="h-6 w-6" />
+            <div className="flex items-center gap-2">
+              {location.pathname !== "/about" && (
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/about">{t("nav.about")}</Link>
                 </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-64">
-                <div className="flex flex-col space-y-1 mt-6">
-                  <NavLinks mobile />
-                </div>
-              </SheetContent>
-            </Sheet>
+              )}
+              {location.pathname !== "/admin" && (
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/admin">{t("nav.admin")}</Link>
+                </Button>
+              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={toggleLanguage}
+                className="flex items-center gap-1"
+              >
+                <Globe className="h-4 w-4" />
+                <span>{language === "en" ? "عربي" : "EN"}</span>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
       
-      <main>{children}</main>
+      <main className="pt-14">{children}</main>
       
-      <footer className="border-t bg-muted/30 mt-12">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-muted-foreground">
-            <p className="text-sm">
-              This is a learning tool. Please consult qualified Islamic scholars for personal religious guidance.
-            </p>
-            <p className="text-xs mt-2">
-              Islamic Knowledge Assistant - Providing answers based on authentic Islamic sources
-            </p>
-          </div>
+      <footer className="border-t bg-card/50 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-6">
+          <p className="text-center text-sm text-muted-foreground">
+            {t("footer.disclaimer")}
+          </p>
         </div>
       </footer>
     </div>
