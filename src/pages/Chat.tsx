@@ -1,100 +1,84 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Moon, Send, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import Layout from "@/components/Layout";
+import Navbar from "@/components/Navbar";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Link } from "react-router-dom";
-import { Send, BookOpen, Sparkles } from "lucide-react";
 
 interface Message {
   id: string;
   type: "user" | "assistant";
   content: string;
-  sources?: string[];
-  timestamp: Date;
+  sources?: { name: string; category: string }[];
 }
 
-const mockResponses = [
-  {
-    keywords: ["prayer", "salah", "salat", "صلاة", "الصلاة"],
-    response: {
-      en: "Prayer (Salah) is one of the Five Pillars of Islam and is obligatory for all adult Muslims. Muslims perform five daily prayers: Fajr (dawn), Dhuhr (midday), Asr (afternoon), Maghrib (sunset), and Isha (night).",
-      ar: "الصلاة هي أحد أركان الإسلام الخمسة وهي فرض على كل مسلم بالغ. يؤدي المسلمون خمس صلوات يومياً: الفجر والظهر والعصر والمغرب والعشاء."
-    },
-    sources: ["Sahih al-Bukhari, Book 8, Hadith 345", "Quran 2:238", "Sahih Muslim, Book 5"]
-  },
-  {
-    keywords: ["zakat", "charity", "زكاة", "الزكاة"],
-    response: {
-      en: "Zakat is obligatory charity that Muslims must pay annually on their wealth if it meets the nisab (minimum threshold). The standard rate is 2.5% of savings held for a lunar year.",
-      ar: "الزكاة هي صدقة واجبة يدفعها المسلمون سنوياً على أموالهم إذا بلغت النصاب. المعدل القياسي هو 2.5% من المدخرات المحتفظ بها لسنة قمرية."
-    },
-    sources: ["Quran 2:110", "Sahih al-Bukhari, Book 24", "Fiqh al-Zakat, p. 45"]
-  },
-  {
-    keywords: ["fasting", "ramadan", "sawm", "صيام", "رمضان"],
-    response: {
-      en: "Fasting during Ramadan is one of the Five Pillars of Islam. Muslims abstain from food, drink, and marital relations from dawn (Fajr) until sunset (Maghrib).",
-      ar: "الصيام في رمضان هو أحد أركان الإسلام الخمسة. يمتنع المسلمون عن الطعام والشراب والعلاقات الزوجية من الفجر حتى المغرب."
-    },
-    sources: ["Quran 2:183-185", "Sahih al-Bukhari, Book 31", "Sahih Muslim, Book 13"]
-  }
+const suggestedQuestions = [
+  "What are the conditions for a valid prayer?",
+  "How is Zakat calculated on savings?",
+  "What are the pillars of fasting in Ramadan?",
+  "What is the ruling on combining prayers while traveling?",
+  "What are the types of water in Islamic jurisprudence?",
 ];
 
+const mockResponses: Record<string, { content: string; sources: { name: string; category: string }[] }> = {
+  prayer: {
+    content: "Prayer (Salah) has several conditions for validity including: ritual purity (tahara), covering the awrah, facing the Qibla, entering the prayer time, and having the intention (niyyah). The prayer also has pillars (arkan) that must be performed including standing, reciting Al-Fatiha, bowing (ruku'), prostrating (sujud), and the final sitting.",
+    sources: [{ name: "Sahih al-Bukhari", category: "Hadith" }, { name: "Fiqh al-Sunnah", category: "Fiqh" }],
+  },
+  zakat: {
+    content: "Zakat on savings is calculated at 2.5% of wealth that has reached the nisab threshold and been held for one lunar year (hawl). The nisab is equivalent to 85 grams of gold or 595 grams of silver. Only the amount above nisab is subject to Zakat.",
+    sources: [{ name: "Quran 2:267", category: "Qur'an" }, { name: "Sahih Muslim", category: "Hadith" }],
+  },
+  fasting: {
+    content: "The pillars of fasting in Ramadan are: 1) Intention (niyyah) made before Fajr each day, 2) Abstaining from food, drink, and marital relations from dawn (Fajr) to sunset (Maghrib), 3) The fasting person must be Muslim, sane, and of age.",
+    sources: [{ name: "Quran 2:183-185", category: "Qur'an" }, { name: "Sahih al-Bukhari", category: "Hadith" }],
+  },
+  default: {
+    content: "This is an excellent question about Islamic knowledge. Based on authentic scholarly sources, the answer involves careful consideration of the Qur'an, Sunnah, and scholarly consensus. Please consult with a qualified scholar for detailed guidance on your specific situation.",
+    sources: [{ name: "The Noble Qur'an", category: "Qur'an" }],
+  },
+};
+
 const Chat = () => {
-  const { t, language, isRTL } = useLanguage();
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      type: "assistant",
-      content: t("chat.welcome"),
-      timestamp: new Date(),
-    }
-  ]);
+  const { t, isRTL } = useLanguage();
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendMessage = async () => {
-    if (!inputValue.trim() || isLoading) return;
+  const handleSendMessage = (question?: string) => {
+    const text = question || inputValue;
+    if (!text.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       type: "user",
-      content: inputValue,
-      timestamp: new Date(),
+      content: text,
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
     setIsLoading(true);
 
     setTimeout(() => {
-      const lowercaseInput = inputValue.toLowerCase();
-      const matchingResponse = mockResponses.find(response =>
-        response.keywords.some(keyword => lowercaseInput.includes(keyword))
-      );
-
-      let assistantResponse: Message;
-      
-      if (matchingResponse) {
-        assistantResponse = {
-          id: (Date.now() + 1).toString(),
-          type: "assistant",
-          content: matchingResponse.response[language],
-          sources: matchingResponse.sources,
-          timestamp: new Date(),
-        };
-      } else {
-        assistantResponse = {
-          id: (Date.now() + 1).toString(),
-          type: "assistant",
-          content: t("chat.noAnswer"),
-          timestamp: new Date(),
-        };
+      const lowerText = text.toLowerCase();
+      let response = mockResponses.default;
+      if (lowerText.includes("prayer") || lowerText.includes("salah")) {
+        response = mockResponses.prayer;
+      } else if (lowerText.includes("zakat")) {
+        response = mockResponses.zakat;
+      } else if (lowerText.includes("fasting") || lowerText.includes("ramadan")) {
+        response = mockResponses.fasting;
       }
 
-      setMessages(prev => [...prev, assistantResponse]);
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: "assistant",
+        content: response.content,
+        sources: response.sources,
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
       setIsLoading(false);
     }, 1500);
   };
@@ -107,110 +91,131 @@ const Chat = () => {
   };
 
   return (
-    <Layout>
-      <div className="container mx-auto px-6 py-12 max-w-4xl">
-        {/* Premium Hero Section */}
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="relative inline-flex items-center justify-center mb-6">
-            <div className="w-20 h-20 gradient-hero rounded-3xl flex items-center justify-center shadow-xl animate-scale-in">
-              <Sparkles className="w-10 h-10 text-white" />
-            </div>
-            <div className="absolute -inset-3 gradient-hero rounded-3xl opacity-20 blur-xl animate-pulse"></div>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-display font-bold bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent mb-4 text-balance">
-            {t("app.name")}
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">{t("chat.disclaimer")}</p>
-        </div>
+    <div className="min-h-screen bg-background flex flex-col" dir={isRTL ? "rtl" : "ltr"}>
+      <Navbar />
 
-        {/* Enhanced Chat Area */}
-        <div className="flex flex-col h-[calc(100vh-28rem)]">
-          <div className="flex-1 overflow-y-auto space-y-6 mb-6 px-2">
+      <main className="flex-1 container mx-auto px-4 py-8 flex flex-col">
+        {messages.length === 0 ? (
+          /* Empty State */
+          <div className="flex-1 flex flex-col items-center justify-center text-center max-w-2xl mx-auto">
+            <div className="w-20 h-20 bg-card rounded-2xl flex items-center justify-center border border-border mb-6">
+              <Moon className="w-10 h-10 text-gold" />
+            </div>
+
+            <div className="flex items-center mb-2">
+              <span className="text-4xl font-bold text-white">Nur</span>
+              <span className="text-4xl font-bold text-gold">AI</span>
+            </div>
+
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-muted mb-6">
+              {t("app.subtitle")}
+            </p>
+
+            <p className="text-gray-muted mb-2">
+              Ask about Islamic teachings, rulings, and guidance
+            </p>
+            <p className="text-gray-muted mb-6">
+              powered by trusted scholarly sources.
+            </p>
+
+            <Link
+              to="/sources"
+              className="inline-flex items-center gap-2 px-5 py-2.5 border border-gold text-gold rounded-full text-sm hover:bg-gold/10 transition-colors mb-10"
+            >
+              <BookOpen className="w-4 h-4" />
+              View Sources
+            </Link>
+
+            {/* Divider with label */}
+            <div className="w-full flex items-center gap-4 mb-6">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-xs uppercase tracking-[0.2em] text-gray-muted">
+                Suggested Questions
+              </span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+
+            {/* Suggested Questions */}
+            <div className="flex flex-wrap justify-center gap-3">
+              {suggestedQuestions.map((question, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleSendMessage(question)}
+                  className="px-4 py-2 border border-border rounded-full text-sm text-white hover:border-gray-muted hover:bg-card transition-colors"
+                >
+                  {question}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          /* Chat Messages */
+          <div className="flex-1 overflow-y-auto space-y-4 mb-4 pb-4">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.type === "user" ? (isRTL ? "justify-start" : "justify-end") : (isRTL ? "justify-end" : "justify-start")} animate-fade-in`}
+                className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
               >
-                <Card className={`max-w-[85%] shadow-medium border-0 overflow-hidden ${
-                  message.type === "user" 
-                    ? "gradient-primary text-white" 
-                    : "bg-card shadow-soft"
-                }`}>
-                  <CardContent className="p-6">
-                    <p className={`text-sm leading-relaxed ${message.type === "user" ? "text-white" : "text-foreground"}`}>
-                      {message.content}
-                    </p>
-                    
-                    {message.sources && message.sources.length > 0 && (
-                      <div className="mt-6 pt-4 border-t border-white/20">
-                        <div className="flex items-center gap-2 text-xs mb-3 opacity-90">
-                          <BookOpen className="h-4 w-4" />
-                          <span className="font-semibold">{t("chat.sources")}:</span>
+                <div
+                  className={`max-w-[80%] rounded-2xl px-5 py-3 ${
+                    message.type === "user"
+                      ? "bg-gold text-background"
+                      : "bg-card border border-border"
+                  }`}
+                >
+                  <p className={message.type === "user" ? "text-background" : "text-white"}>
+                    {message.content}
+                  </p>
+                  {message.sources && (
+                    <div className="mt-3 pt-3 border-t border-border space-y-1">
+                      {message.sources.map((source, idx) => (
+                        <div key={idx} className="text-xs text-gray-muted">
+                          <span className="font-medium">Source:</span> {source.name} •{" "}
+                          <span className="text-gold">{source.category}</span>
                         </div>
-                        <div className="space-y-2">
-                          {message.sources.map((source, index) => (
-                            <div key={index} className="text-xs bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2 border border-white/20">
-                              {source}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
-            
             {isLoading && (
-              <div className={`flex ${isRTL ? "justify-end" : "justify-start"} animate-fade-in`}>
-                <Card className="bg-card shadow-soft border-0">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-4">
-                      <div className="flex gap-1.5">
-                        <div className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce"></div>
-                        <div className="w-2.5 h-2.5 bg-secondary rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
-                        <div className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-                      </div>
-                      <span className="text-sm text-muted-foreground font-medium">{t("chat.searching")}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+              <div className="flex justify-start">
+                <div className="bg-card border border-border rounded-2xl px-5 py-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-gold rounded-full animate-bounce" />
+                    <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: "0.1s" }} />
+                    <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
+                  </div>
+                </div>
               </div>
             )}
           </div>
-          
-          {/* Enhanced Input Section */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Input
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder={t("chat.placeholder")}
-                className="flex-1 h-14 bg-card border-2 border-border/50 focus:border-primary shadow-medium rounded-2xl text-base px-6 transition-all duration-200"
-                disabled={isLoading}
-                dir={isRTL ? "rtl" : "ltr"}
-              />
-              <Button 
-                onClick={handleSendMessage} 
-                disabled={!inputValue.trim() || isLoading}
-                size="lg"
-                className="h-14 w-14 gradient-primary hover:shadow-large transition-all duration-300 rounded-2xl"
-              >
-                <Send className={`h-5 w-5 ${isRTL ? "rotate-180" : ""}`} />
-              </Button>
-            </div>
-            
-            <Button asChild variant="outline" className="w-full h-12 border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50 rounded-2xl font-medium transition-all duration-200 shadow-soft">
-              <Link to="/sources" className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4" />
-                {t("chat.viewSources")}
-              </Link>
+        )}
+
+        {/* Input Area */}
+        <div className="sticky bottom-0 bg-background pt-4 pb-6">
+          <div className="flex items-center gap-3 bg-card border border-border rounded-xl p-2">
+            <Input
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Ask a question about Islamic knowledge..."
+              className="flex-1 bg-transparent border-0 focus-visible:ring-0 text-white placeholder:text-gray-muted"
+              disabled={isLoading}
+            />
+            <Button
+              onClick={() => handleSendMessage()}
+              disabled={!inputValue.trim() || isLoading}
+              size="icon"
+              className="bg-gold hover:bg-gold/90 text-background rounded-lg"
+            >
+              <Send className="w-4 h-4" />
             </Button>
           </div>
         </div>
-      </div>
-    </Layout>
+      </main>
+    </div>
   );
 };
 
