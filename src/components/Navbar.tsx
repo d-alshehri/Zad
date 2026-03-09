@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Moon, Globe, Settings, MessageSquare, BookOpen, Info } from "lucide-react";
+import { Moon, Globe, MessageSquare, BookOpen, Info } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navbar = () => {
@@ -60,9 +60,9 @@ const Navbar = () => {
           >
             {language === "en" ? "العربية" : "English"}
           </button>
-          <button className="p-2 text-gray-muted hover:text-white transition-colors">
-            <Settings className="w-4 h-4" />
-          </button>
+          <Link to="/admin" className="px-3 py-1.5 text-sm text-gray-muted hover:text-white transition-colors">
+            Admin
+          </Link>
         </div>
       </div>
     </nav>
