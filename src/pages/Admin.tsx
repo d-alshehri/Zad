@@ -279,7 +279,7 @@ const Admin = () => {
           <div className="grid md:grid-cols-4 gap-4 mt-8">
             <Card>
               <CardContent className="p-6">
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-primary">
                   {sources.filter(s => s.status === "active").length}
                 </div>
                 <p className="text-muted-foreground">Active Sources</p>
@@ -287,7 +287,7 @@ const Admin = () => {
             </Card>
             <Card>
               <CardContent className="p-6">
-                <div className="text-2xl font-bold text-yellow-600">
+                <div className="text-2xl font-bold text-accent-foreground">
                   {sources.filter(s => s.status === "pending").length}
                 </div>
                 <p className="text-muted-foreground">Pending Review</p>
@@ -295,7 +295,7 @@ const Admin = () => {
             </Card>
             <Card>
               <CardContent className="p-6">
-                <div className="text-2xl font-bold text-red-600">
+                <div className="text-2xl font-bold text-destructive">
                   {sources.filter(s => s.status === "disabled").length}
                 </div>
                 <p className="text-muted-foreground">Disabled</p>

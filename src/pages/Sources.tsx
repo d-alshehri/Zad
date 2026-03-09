@@ -97,11 +97,11 @@ const typeIcons = {
 };
 
 const typeColors = {
-  quran: "default",
-  hadith: "secondary", 
-  tafsir: "outline",
-  fiqh: "secondary",
-  fatwa: "destructive"
+  quran: "default" as const,
+  hadith: "secondary" as const, 
+  tafsir: "outline" as const,
+  fiqh: "secondary" as const,
+  fatwa: "destructive" as const
 };
 
 const Sources = () => {
