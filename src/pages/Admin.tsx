@@ -237,12 +237,12 @@ const Admin = () => {
                       <TableCell className="capitalize">{source.type}</TableCell>
                       <TableCell>
                         <Badge 
-                          className={
+                          variant={
                             source.status === "active" 
-                              ? "bg-green-100 text-green-800 border-green-200"
+                              ? "default"
                               : source.status === "pending"
-                              ? "bg-yellow-100 text-yellow-800 border-yellow-200" 
-                              : "bg-red-100 text-red-800 border-red-200"
+                              ? "secondary" 
+                              : "destructive"
                           }
                         >
                           {source.status}

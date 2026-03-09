@@ -97,11 +97,11 @@ const typeIcons = {
 };
 
 const typeColors = {
-  quran: "bg-green-100 text-green-800 border-green-200",
-  hadith: "bg-blue-100 text-blue-800 border-blue-200", 
-  tafsir: "bg-purple-100 text-purple-800 border-purple-200",
-  fiqh: "bg-orange-100 text-orange-800 border-orange-200",
-  fatwa: "bg-red-100 text-red-800 border-red-200"
+  quran: "default",
+  hadith: "secondary", 
+  tafsir: "outline",
+  fiqh: "secondary",
+  fatwa: "destructive"
 };
 
 const Sources = () => {
@@ -168,7 +168,7 @@ const Sources = () => {
                     <Card key={source.id} className="h-full">
                       <CardHeader>
                         <div className="flex justify-between items-start mb-2">
-                          <Badge className={typeColors[source.type as keyof typeof typeColors]}>
+                          <Badge variant={typeColors[source.type as keyof typeof typeColors]}>
                             {source.type.toUpperCase()}
                           </Badge>
                         </div>
