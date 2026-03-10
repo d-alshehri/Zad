@@ -48,7 +48,7 @@ const Admin = () => {
         </div>
       </main>
       <footer className="py-6 text-center">
-        <p className="text-xs text-gray-muted">© 2026 NurAI — {t("app.subtitle")}</p>
+        <p className="text-xs text-gray-muted">© 2026 Sanā — {t("app.subtitle")}</p>
       </footer>
     </div>
   );
