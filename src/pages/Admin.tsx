@@ -21,8 +21,8 @@ const Admin = () => {
       <Navbar />
       <main className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-sm text-center">
-          <div className="w-16 h-16 bg-purple rounded-xl flex items-center justify-center mx-auto mb-6">
-            <Lock className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-6">
+            <Lock className="w-8 h-8 text-primary-foreground" />
           </div>
           <p className="text-xs uppercase tracking-[0.2em] text-gray-muted mb-2">
             {t("admin.access")}
