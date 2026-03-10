@@ -39,7 +39,7 @@ const Admin = () => {
                 placeholder={t("admin.password")}
                 className="bg-background border-border text-foreground placeholder:text-gray-muted"
               />
-              <Button type="submit" className="w-full bg-purple hover:bg-purple/90 text-white">
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
                 {t("admin.login")}
               </Button>
             </form>
