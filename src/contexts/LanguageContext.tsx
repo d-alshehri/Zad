@@ -12,7 +12,7 @@ interface LanguageContextType {
 const translations: Record<string, Record<Language, string>> = {
   // App branding
   "app.name": {
-    en: "NurAI",
+    en: "Sanā",
     ar: "نور الذكاء"
   },
   "app.subtitle": {
@@ -48,7 +48,7 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Chat interface
   "chat.welcome": {
-    en: "Assalamu Alaikum! I'm NurAI, your Islamic knowledge assistant.",
+    en: "Assalamu Alaikum! I'm Sanā, your Islamic knowledge assistant.",
     ar: "السلام عليكم! أنا نور الذكاء، مساعدك للمعرفة الإسلامية."
   },
   "chat.placeholder": {
@@ -130,11 +130,11 @@ const translations: Record<string, Record<Language, string>> = {
 
   // About page
   "about.title": {
-    en: "About NurAI",
+    en: "About Sanā",
     ar: "عن نور الذكاء"
   },
   "about.description": {
-    en: "NurAI is a digital reference tool designed to help Muslims access answers grounded in authentic scholarly sources.",
+    en: "Sanā is a digital reference tool designed to help Muslims access answers grounded in authentic scholarly sources.",
     ar: "نور الذكاء هو أداة مرجعية رقمية مصممة لمساعدة المسلمين في الوصول إلى إجابات مؤسسة على المصادر العلمية الأصيلة."
   },
   "about.methodology": {
@@ -142,7 +142,7 @@ const translations: Record<string, Record<Language, string>> = {
     ar: "منهجيتنا"
   },
   "about.methodologyText": {
-    en: "NurAI aggregates knowledge from the Quran, authentic Hadith, classical Tafsir, and recognized scholarly opinions to provide reliable Islamic guidance.",
+    en: "Sanā aggregates knowledge from the Quran, authentic Hadith, classical Tafsir, and recognized scholarly opinions to provide reliable Islamic guidance.",
     ar: "يجمع نور الذكاء المعرفة من القرآن الكريم والأحاديث الصحيحة والتفاسير الكلاسيكية والآراء العلمية المعتبرة لتقديم إرشاد إسلامي موثوق."
   },
   "about.disclaimer": {

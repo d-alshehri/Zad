@@ -26,8 +26,8 @@ const About = () => {
 
   const c = language === "en"
     ? {
-        aboutTitle: "About NurAI",
-        p1: "NurAI is a digital reference tool designed to help Muslims access answers grounded in authentic scholarly sources. Our platform aggregates knowledge from the Quran, authentic Hadith, classical Tafsir, and recognized scholarly opinions to provide reliable Islamic guidance.",
+        aboutTitle: "About Sanā",
+        p1: "Sanā is a digital reference tool designed to help Muslims access answers grounded in authentic scholarly sources. Our platform aggregates knowledge from the Quran, authentic Hadith, classical Tafsir, and recognized scholarly opinions to provide reliable Islamic guidance.",
         p2: "Our system operates with strict adherence to authentic Islamic sources. Every response is derived from verified scholarly texts, ensuring that users receive guidance rooted in traditional Islamic scholarship.",
         disclaimer: "Important: This tool is a learning and reference aid. It is not a substitute for consulting qualified scholars regarding personal or complex matters.",
         contactTitle: "Contact Us",
