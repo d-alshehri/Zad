@@ -46,7 +46,7 @@ const AdminDashboard = () => {
   };
 
   const stats = [
-    { label: t("admin.totalSources"), value: sources.length, icon: Database, color: "text-purple" },
+    { label: t("admin.totalSources"), value: sources.length, icon: Database, color: "text-primary" },
     { label: t("admin.recentlyAdded"), value: 0, icon: Clock, color: "text-orange-500" },
     { label: t("admin.categories"), value: 4, icon: Layers, color: "text-green-source" },
   ];
