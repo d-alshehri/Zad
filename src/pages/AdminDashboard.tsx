@@ -46,7 +46,7 @@ const AdminDashboard = () => {
   };
 
   const stats = [
-    { label: t("admin.totalSources"), value: sources.length, icon: Database, color: "text-purple" },
+    { label: t("admin.totalSources"), value: sources.length, icon: Database, color: "text-primary" },
     { label: t("admin.recentlyAdded"), value: 0, icon: Clock, color: "text-orange-500" },
     { label: t("admin.categories"), value: 4, icon: Layers, color: "text-green-source" },
   ];
@@ -91,7 +91,7 @@ const AdminDashboard = () => {
         <div className="bg-card border border-border rounded-xl p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-bold text-foreground">{t("admin.sources")}</h2>
-            <Button onClick={handleAddSource} className="bg-purple hover:bg-purple/90 text-white">
+            <Button onClick={handleAddSource} className="bg-primary hover:bg-primary/90 text-primary-foreground">
               + {t("admin.addSource")}
             </Button>
           </div>

@@ -21,8 +21,8 @@ const Admin = () => {
       <Navbar />
       <main className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-sm text-center">
-          <div className="w-16 h-16 bg-purple rounded-xl flex items-center justify-center mx-auto mb-6">
-            <Lock className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-6">
+            <Lock className="w-8 h-8 text-primary-foreground" />
           </div>
           <p className="text-xs uppercase tracking-[0.2em] text-gray-muted mb-2">
             {t("admin.access")}
@@ -39,7 +39,7 @@ const Admin = () => {
                 placeholder={t("admin.password")}
                 className="bg-background border-border text-foreground placeholder:text-gray-muted"
               />
-              <Button type="submit" className="w-full bg-purple hover:bg-purple/90 text-white">
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
                 {t("admin.login")}
               </Button>
             </form>
