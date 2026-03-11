@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
-import { Moon, MessageSquare, BookOpen, Info } from "lucide-react";
+import { MessageSquare, BookOpen, Info } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import logo from "@/assets/logo.png";
 
 const Navbar = () => {
   const location = useLocation();
