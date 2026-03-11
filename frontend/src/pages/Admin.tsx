@@ -6,15 +6,26 @@ import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+// The admin password is set in your frontend .env as VITE_ADMIN_PASSWORD
+// It should match the ADMIN_PASSWORD in your backend .env
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "admin";
+
 const Admin = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
   const { t, language } = useLanguage();
   const appName = language === "ar" ? "زاد" : "Zad";
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/admin/dashboard");
+    if (password === ADMIN_PASSWORD) {
+      setError(false);
+      navigate("/admin/dashboard");
+    } else {
+      setError(true);
+      setPassword("");
+    }
   };
 
   return (
@@ -32,16 +43,17 @@ const Admin = () => {
               <Input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => { setPassword(e.target.value); setError(false); }}
                 placeholder={t("admin.password")}
-                className="bg-background border-border text-foreground placeholder:text-gray-muted"
+                className={`bg-background border-border text-foreground placeholder:text-gray-muted ${error ? "border-red-500" : ""}`}
               />
+              {error && <p className="text-red-400 text-xs text-left">Incorrect password</p>}
               <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
                 {t("admin.login")}
               </Button>
             </form>
           </div>
-          <p className="text-xs text-gray-muted">{t("admin.prototypeNote")}</p>
+          <p className="text-xs text-gray-muted">Set your password in the <code className="bg-card px-1 rounded">.env</code> file</p>
         </div>
       </main>
       <footer className="py-6 text-center">
