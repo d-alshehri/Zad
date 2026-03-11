@@ -13,38 +13,48 @@ interface Message {
   sources?: { name: string; category: string }[];
 }
 
-const suggestedQuestions = [
-  "What are the conditions for a valid prayer?",
-  "How is Zakat calculated on savings?",
-  "What are the pillars of fasting in Ramadan?",
-  "What is the ruling on combining prayers while traveling?",
-  "What are the types of water in Islamic jurisprudence?",
-];
-
-const mockResponses: Record<string, { content: string; sources: { name: string; category: string }[] }> = {
-  prayer: {
-    content: "Prayer (Salah) has several conditions for validity including: ritual purity (tahara), covering the awrah, facing the Qibla, entering the prayer time, and having the intention (niyyah). The prayer also has pillars (arkan) that must be performed including standing, reciting Al-Fatiha, bowing (ruku'), prostrating (sujud), and the final sitting.",
-    sources: [{ name: "Sahih al-Bukhari", category: "Hadith" }, { name: "Fiqh al-Sunnah", category: "Fiqh" }],
-  },
-  zakat: {
-    content: "Zakat on savings is calculated at 2.5% of wealth that has reached the nisab threshold and been held for one lunar year (hawl). The nisab is equivalent to 85 grams of gold or 595 grams of silver. Only the amount above nisab is subject to Zakat.",
-    sources: [{ name: "Quran 2:267", category: "Qur'an" }, { name: "Sahih Muslim", category: "Hadith" }],
-  },
-  fasting: {
-    content: "The pillars of fasting in Ramadan are: 1) Intention (niyyah) made before Fajr each day, 2) Abstaining from food, drink, and marital relations from dawn (Fajr) to sunset (Maghrib), 3) The fasting person must be Muslim, sane, and of age.",
-    sources: [{ name: "Quran 2:183-185", category: "Qur'an" }, { name: "Sahih al-Bukhari", category: "Hadith" }],
-  },
-  default: {
-    content: "This is an excellent question about Islamic knowledge. Based on authentic scholarly sources, the answer involves careful consideration of the Qur'an, Sunnah, and scholarly consensus. Please consult with a qualified scholar for detailed guidance on your specific situation.",
-    sources: [{ name: "The Noble Qur'an", category: "Qur'an" }],
-  },
-};
-
 const Chat = () => {
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, language } = useLanguage();
+  const appName = language === "ar" ? "زاد" : "Zad";
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const suggestedQuestions = [
+    t("question.prayer"),
+    t("question.zakat"),
+    t("question.fasting"),
+    t("question.travel"),
+    t("question.water"),
+  ];
+
+  const mockResponses: Record<string, { content: string; sources: { name: string; category: string }[] }> = {
+    prayer: {
+      content: t("chat.response.prayer"),
+      sources: [
+        { name: "Sahih al-Bukhari", category: t("chat.source.hadith") },
+        { name: "Fiqh al-Sunnah", category: t("chat.source.fiqh") },
+      ],
+    },
+    zakat: {
+      content: t("chat.response.zakat"),
+      sources: [
+        { name: "Quran 2:267", category: t("chat.source.quran") },
+        { name: "Sahih Muslim", category: t("chat.source.hadith") },
+      ],
+    },
+    fasting: {
+      content: t("chat.response.fasting"),
+      sources: [
+        { name: "Quran 2:183-185", category: t("chat.source.quran") },
+        { name: "Sahih al-Bukhari", category: t("chat.source.hadith") },
+      ],
+    },
+    default: {
+      content: t("chat.response.default"),
+      sources: [{ name: "The Noble Qur'an", category: t("chat.source.quran") }],
+    },
+  };
 
   const handleSendMessage = (question?: string) => {
     const text = question || inputValue;
@@ -63,11 +73,21 @@ const Chat = () => {
     setTimeout(() => {
       const lowerText = text.toLowerCase();
       let response = mockResponses.default;
-      if (lowerText.includes("prayer") || lowerText.includes("salah")) {
+
+      if (
+        lowerText.includes("prayer") ||
+        lowerText.includes("salah") ||
+        lowerText.includes("الصلاة")
+      ) {
         response = mockResponses.prayer;
-      } else if (lowerText.includes("zakat")) {
+      } else if (lowerText.includes("zakat") || lowerText.includes("الزكاة")) {
         response = mockResponses.zakat;
-      } else if (lowerText.includes("fasting") || lowerText.includes("ramadan")) {
+      } else if (
+        lowerText.includes("fasting") ||
+        lowerText.includes("ramadan") ||
+        lowerText.includes("الصيام") ||
+        lowerText.includes("رمضان")
+      ) {
         response = mockResponses.fasting;
       }
 
@@ -96,46 +116,35 @@ const Chat = () => {
 
       <main className="flex-1 container mx-auto px-4 py-8 flex flex-col">
         {messages.length === 0 ? (
-          /* Empty State */
           <div className="flex-1 flex flex-col items-center justify-center text-center max-w-2xl mx-auto">
             <div className="w-20 h-20 bg-card rounded-2xl flex items-center justify-center border border-border mb-6">
               <Moon className="w-10 h-10 text-gold" />
             </div>
 
             <div className="flex items-center mb-2">
-              <span className="text-4xl font-bold text-white">Nur</span>
+              <span className="text-4xl font-bold text-white">{appName}</span>
               <span className="text-4xl font-bold text-gold">AI</span>
             </div>
 
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-muted mb-6">
-              {t("app.subtitle")}
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-muted mb-6">{t("app.subtitle")}</p>
 
-            <p className="text-gray-muted mb-2">
-              Ask about Islamic teachings, rulings, and guidance
-            </p>
-            <p className="text-gray-muted mb-6">
-              powered by trusted scholarly sources.
-            </p>
+            <p className="text-gray-muted mb-2">{t("chat.descriptionLine1")}</p>
+            <p className="text-gray-muted mb-6">{t("chat.descriptionLine2")}</p>
 
             <Link
               to="/sources"
               className="inline-flex items-center gap-2 px-5 py-2.5 border border-gold text-gold rounded-full text-sm hover:bg-gold/10 transition-colors mb-10"
             >
               <BookOpen className="w-4 h-4" />
-              View Sources
+              {t("chat.viewSources")}
             </Link>
 
-            {/* Divider with label */}
             <div className="w-full flex items-center gap-4 mb-6">
               <div className="flex-1 h-px bg-border" />
-              <span className="text-xs uppercase tracking-[0.2em] text-gray-muted">
-                Suggested Questions
-              </span>
+              <span className="text-xs uppercase tracking-[0.2em] text-gray-muted">{t("chat.suggestedQuestions")}</span>
               <div className="flex-1 h-px bg-border" />
             </div>
 
-            {/* Suggested Questions */}
             <div className="flex flex-wrap justify-center gap-3">
               {suggestedQuestions.map((question, index) => (
                 <button
@@ -149,28 +158,24 @@ const Chat = () => {
             </div>
           </div>
         ) : (
-          /* Chat Messages */
           <div className="flex-1 overflow-y-auto space-y-4 mb-4 pb-4">
             {messages.map((message) => (
               <div
                 key={message.id}
+                dir="ltr"
                 className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
                   className={`max-w-[80%] rounded-2xl px-5 py-3 ${
-                    message.type === "user"
-                      ? "bg-gold text-background"
-                      : "bg-card border border-border"
+                    message.type === "user" ? "bg-gold text-background" : "bg-card border border-border"
                   }`}
                 >
-                  <p className={message.type === "user" ? "text-background" : "text-white"}>
-                    {message.content}
-                  </p>
+                  <p className={message.type === "user" ? "text-background" : "text-white"}>{message.content}</p>
                   {message.sources && (
                     <div className="mt-3 pt-3 border-t border-border space-y-1">
                       {message.sources.map((source, idx) => (
                         <div key={idx} className="text-xs text-gray-muted">
-                          <span className="font-medium">Source:</span> {source.name} •{" "}
+                          <span className="font-medium">{t("chat.sourceLabel")}</span> {source.name} •{" "}
                           <span className="text-gold">{source.category}</span>
                         </div>
                       ))}
@@ -193,14 +198,13 @@ const Chat = () => {
           </div>
         )}
 
-        {/* Input Area */}
         <div className="sticky bottom-0 bg-background pt-4 pb-6">
           <div className="flex items-center gap-3 bg-card border border-border rounded-xl p-2">
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask a question about Islamic knowledge..."
+              placeholder={t("chat.placeholder")}
               className="flex-1 bg-transparent border-0 focus-visible:ring-0 text-white placeholder:text-gray-muted"
               disabled={isLoading}
             />

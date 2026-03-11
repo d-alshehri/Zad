@@ -9,7 +9,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const Admin = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const appName = language === "ar" ? "زاد" : "Zad";
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,12 +25,8 @@ const Admin = () => {
           <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-6">
             <Lock className="w-8 h-8 text-primary-foreground" />
           </div>
-          <p className="text-xs uppercase tracking-[0.2em] text-gray-muted mb-2">
-            {t("admin.access")}
-          </p>
-          <p className="text-gray-muted text-sm mb-6">
-            {t("admin.accessDesc")}
-          </p>
+          <p className="text-xs uppercase tracking-[0.2em] text-gray-muted mb-2">{t("admin.access")}</p>
+          <p className="text-gray-muted text-sm mb-6">{t("admin.accessDesc")}</p>
           <div className="bg-card border border-border rounded-xl p-6 mb-4">
             <form onSubmit={handleLogin} className="space-y-4">
               <Input
@@ -48,7 +45,7 @@ const Admin = () => {
         </div>
       </main>
       <footer className="py-6 text-center">
-        <p className="text-xs text-gray-muted">© 2026 Sanā — {t("app.subtitle")}</p>
+        <p className="text-xs text-gray-muted">© 2026 {appName} — {t("app.subtitle")}</p>
       </footer>
     </div>
   );

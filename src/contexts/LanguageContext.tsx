@@ -12,16 +12,16 @@ interface LanguageContextType {
 const translations: Record<string, Record<Language, string>> = {
   // App branding
   "app.name": {
-    en: "Sanā",
-    ar: "نور الذكاء"
+    en: "Zad",
+    ar: "زاد"
   },
   "app.subtitle": {
-    en: "Islamic Knowledge Assistant",
-    ar: "مساعد المعرفة الإسلامية"
+    en: "وَقُل رَّبِّ زِدْنِى عِلْمًۭا",
+    ar: "وَقُل رَّبِّ زِدْنِى عِلْمًۭا"
   },
   "app.description": {
     en: "Ask about Islamic teachings, rulings, and guidance powered by trusted scholarly sources.",
-    ar: "اسأل عن التعاليم والأحكام والإرشاد الإسلامي مدعوماً بمصادر علمية موثوقة."
+    ar: "اسأل عن التعاليم والأحكام والإرشاد الإسلامي"
   },
 
   // Navigation
@@ -48,8 +48,8 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Chat interface
   "chat.welcome": {
-    en: "Assalamu Alaikum! I'm Sanā, your Islamic knowledge assistant.",
-    ar: "السلام عليكم! أنا نور الذكاء، مساعدك للمعرفة الإسلامية."
+    en: "Assalamu Alaikum! I'm Zad, your Islamic knowledge assistant.",
+    ar: "السلام عليكم! أنا زاد، مساعدك للمعرفة الإسلامية."
   },
   "chat.placeholder": {
     en: "Ask a question about Islamic knowledge...",
@@ -128,22 +128,135 @@ const translations: Record<string, Record<Language, string>> = {
     ar: "العودة للمحادثة"
   },
 
+  "sources.items.1.name": {
+    en: "The Noble Qur'an",
+    ar: "القرآن الكريم"
+  },
+  "sources.items.1.author": {
+    en: "Divine Revelation",
+    ar: "وحي من الله"
+  },
+  "sources.items.1.language": {
+    en: "Arabic / English",
+    ar: "العربية / الإنجليزية"
+  },
+  "sources.items.1.description": {
+    en: "The holy book of Islam, the primary source of Islamic law and guidance. Complete text with multiple translations.",
+    ar: "الكتاب المقدس في الإسلام، وهو المصدر الأول للتشريع والهداية. يتضمن النص الكامل مع عدة ترجمات."
+  },
+  "sources.items.2.name": {
+    en: "Mushaf Al-Madinah",
+    ar: "مصحف المدينة"
+  },
+  "sources.items.2.author": {
+    en: "King Fahd Complex",
+    ar: "مجمع الملك فهد"
+  },
+  "sources.items.2.language": {
+    en: "Arabic",
+    ar: "العربية"
+  },
+  "sources.items.2.description": {
+    en: "The official Quranic text printed by the King Fahd Complex, widely accepted and distributed globally.",
+    ar: "النص الرسمي للمصحف المطبوع من مجمع الملك فهد، وهو معتمد ومنتشر على نطاق واسع حول العالم."
+  },
+  "sources.items.3.name": {
+    en: "Sahih al-Bukhari",
+    ar: "صحيح البخاري"
+  },
+  "sources.items.3.author": {
+    en: "Imam Muhammad al-Bukhari",
+    ar: "الإمام محمد البخاري"
+  },
+  "sources.items.3.language": {
+    en: "Arabic / English",
+    ar: "العربية / الإنجليزية"
+  },
+  "sources.items.3.description": {
+    en: "The most authentic collection of Prophetic traditions with over 7,000 hadith.",
+    ar: "أصح كتب السنة النبوية، ويضم أكثر من 7000 حديث."
+  },
+  "sources.items.4.name": {
+    en: "Sahih Muslim",
+    ar: "صحيح مسلم"
+  },
+  "sources.items.4.author": {
+    en: "Imam Muslim ibn al-Hajjaj",
+    ar: "الإمام مسلم بن الحجاج"
+  },
+  "sources.items.4.language": {
+    en: "Arabic / English",
+    ar: "العربية / الإنجليزية"
+  },
+  "sources.items.4.description": {
+    en: "The second most authentic hadith collection, complementing Sahih al-Bukhari.",
+    ar: "ثاني أصح كتب الحديث، ويكمل صحيح البخاري في جمع الروايات الصحيحة."
+  },
+  "sources.items.5.name": {
+    en: "Sunan Abu Dawud",
+    ar: "سنن أبي داود"
+  },
+  "sources.items.5.author": {
+    en: "Imam Abu Dawud",
+    ar: "الإمام أبو داود"
+  },
+  "sources.items.5.language": {
+    en: "Arabic / English",
+    ar: "العربية / الإنجليزية"
+  },
+  "sources.items.5.description": {
+    en: "A comprehensive collection focusing on legal matters and Islamic jurisprudence.",
+    ar: "مجموعة حديثية شاملة تركز على مسائل الأحكام والفقه الإسلامي."
+  },
+  "sources.items.6.name": {
+    en: "Tafsir Ibn Kathir",
+    ar: "تفسير ابن كثير"
+  },
+  "sources.items.6.author": {
+    en: "Imam Ibn Kathir",
+    ar: "الإمام ابن كثير"
+  },
+  "sources.items.6.language": {
+    en: "Arabic / English",
+    ar: "العربية / الإنجليزية"
+  },
+  "sources.items.6.description": {
+    en: "Classical Quranic commentary widely accepted for its authenticity and scholarly methodology.",
+    ar: "تفسير قرآني كلاسيكي مشهور ومعتمد لما يتميز به من أصالة ومنهج علمي."
+  },
+  "sources.items.7.name": {
+    en: "Tafsir al-Tabari",
+    ar: "تفسير الطبري"
+  },
+  "sources.items.7.author": {
+    en: "Imam al-Tabari",
+    ar: "الإمام الطبري"
+  },
+  "sources.items.7.language": {
+    en: "Arabic",
+    ar: "العربية"
+  },
+  "sources.items.7.description": {
+    en: "One of the earliest and most comprehensive Quranic commentaries in Islamic scholarship.",
+    ar: "من أقدم وأشمل كتب التفسير في التراث الإسلامي."
+  },
+
   // About page
   "about.title": {
-    en: "About Sanā",
-    ar: "عن نور الذكاء"
+    en: "About Zad",
+    ar: "عن زاد"
   },
   "about.description": {
-    en: "Sanā is a digital reference tool designed to help Muslims access answers grounded in authentic scholarly sources.",
-    ar: "نور الذكاء هو أداة مرجعية رقمية مصممة لمساعدة المسلمين في الوصول إلى إجابات مؤسسة على المصادر العلمية الأصيلة."
+    en: "Zad is a digital reference tool designed to help Muslims access answers grounded in authentic scholarly sources.",
+    ar: "زاد أداة مرجعية رقمية مصممة لمساعدة المسلمين في الوصول إلى إجابات مؤسسة على المصادر العلمية الأصيلة."
   },
   "about.methodology": {
     en: "Our Methodology",
     ar: "منهجيتنا"
   },
   "about.methodologyText": {
-    en: "Sanā aggregates knowledge from the Quran, authentic Hadith, classical Tafsir, and recognized scholarly opinions to provide reliable Islamic guidance.",
-    ar: "يجمع نور الذكاء المعرفة من القرآن الكريم والأحاديث الصحيحة والتفاسير الكلاسيكية والآراء العلمية المعتبرة لتقديم إرشاد إسلامي موثوق."
+    en: "Zad aggregates knowledge from the Quran, authentic Hadith, classical Tafsir, and recognized scholarly opinions to provide reliable Islamic guidance.",
+    ar: "يجمع زاد المعرفة من القرآن الكريم والأحاديث الصحيحة والتفاسير الكلاسيكية والآراء العلمية المعتبرة لتقديم إرشاد إسلامي موثوق."
   },
   "about.disclaimer": {
     en: "Important: This tool is a learning and reference aid. It is not a substitute for consulting qualified scholars regarding personal or complex matters.",
@@ -266,6 +379,63 @@ const translations: Record<string, Record<Language, string>> = {
   "admin.sourceAdded": {
     en: "Source added",
     ar: "تم إضافة المصدر"
+  }
+  ,
+  "chat.descriptionLine1": {
+    en: "Ask about Islamic teachings, rulings, and guidance",
+    ar: "اسأل عن التعاليم والأحكام والإرشاد الإسلامي"
+  },
+  "chat.descriptionLine2": {
+    en: "powered by trusted scholarly sources.",
+    ar: "بالاعتماد على مصادر علمية موثوقة."
+  },
+  "chat.sourceLabel": {
+    en: "Source:",
+    ar: "المصدر:"
+  },
+  "chat.response.prayer": {
+    en: "Prayer (Salah) has several conditions for validity including: ritual purity (tahara), covering the awrah, facing the Qibla, entering the prayer time, and having the intention (niyyah). The prayer also has pillars (arkan) that must be performed including standing, reciting Al-Fatiha, bowing (ruku'), prostrating (sujud), and the final sitting.",
+    ar: "للصلاة شروط صحة منها: الطهارة، وستر العورة، واستقبال القبلة، ودخول الوقت، والنية. كما أن لها أركانا لا تصح بدونها، مثل القيام، وقراءة الفاتحة، والركوع، والسجود، والجلوس الأخير."
+  },
+  "chat.response.zakat": {
+    en: "Zakat on savings is calculated at 2.5% of wealth that has reached the nisab threshold and been held for one lunar year (hawl). The nisab is equivalent to 85 grams of gold or 595 grams of silver. Only the amount above nisab is subject to Zakat.",
+    ar: "زكاة المال تكون بنسبة 2.5% من المال الذي بلغ النصاب وحال عليه الحول. ويقدّر النصاب بما يعادل 85 غراما من الذهب أو 595 غراما من الفضة. والزكاة تجب في المقدار الذي بلغ النصاب فأكثر."
+  },
+  "chat.response.fasting": {
+    en: "The pillars of fasting in Ramadan are: 1) Intention (niyyah) made before Fajr each day, 2) Abstaining from food, drink, and marital relations from dawn (Fajr) to sunset (Maghrib), 3) The fasting person must be Muslim, sane, and of age.",
+    ar: "من أركان الصيام في رمضان: 1) تبييت النية قبل الفجر، 2) الإمساك عن الطعام والشراب والجماع من طلوع الفجر إلى غروب الشمس، 3) أن يكون الصائم مسلما عاقلا ممن يجب عليه الصوم."
+  },
+  "chat.response.default": {
+    en: "This is an excellent question about Islamic knowledge. Based on authentic scholarly sources, the answer involves careful consideration of the Qur'an, Sunnah, and scholarly consensus. Please consult with a qualified scholar for detailed guidance on your specific situation.",
+    ar: "هذا سؤال مهم في المعرفة الإسلامية. والجواب فيه يحتاج إلى نظر في القرآن والسنة وأقوال أهل العلم المعتبرين. وللحالات الخاصة أو التفصيلية ينبغي الرجوع إلى عالم مؤهل."
+  },
+  "chat.source.hadith": {
+    en: "Hadith",
+    ar: "حديث"
+  },
+  "chat.source.fiqh": {
+    en: "Fiqh",
+    ar: "فقه"
+  },
+  "chat.source.quran": {
+    en: "Qur'an",
+    ar: "القرآن"
+  },
+  "about.messageSent": {
+    en: "Message Sent",
+    ar: "تم إرسال الرسالة"
+  },
+  "about.messageSentDesc": {
+    en: "Thank you for your message. We'll get back to you soon.",
+    ar: "شكرا لرسالتك. سنتواصل معك قريبا."
+  },
+  "common.language.arabic": {
+    en: "العربية",
+    ar: "العربية"
+  },
+  "common.language.english": {
+    en: "English",
+    ar: "English"
   }
 };
 

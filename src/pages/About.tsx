@@ -5,17 +5,16 @@ import { Shield, Mail } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
 const About = () => {
-  const { language, isRTL } = useLanguage();
+  const { language, isRTL, t } = useLanguage();
   const { toast } = useToast();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const appName = language === "ar" ? "زاد" : "Zad";
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: language === "en" ? "Message Sent" : "تم إرسال الرسالة",
-      description: language === "en"
-        ? "Thank you for your message. We'll get back to you soon."
-        : "شكراً لك على رسالتك. سنتواصل معك قريباً.",
+      title: t("about.messageSent"),
+      description: t("about.messageSentDesc"),
     });
     setFormData({ name: "", email: "", message: "" });
   };
@@ -24,41 +23,42 @@ const About = () => {
     setFormData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const c = language === "en"
-    ? {
-        aboutTitle: "About Sanā",
-        p1: "Sanā is a digital reference tool designed to help Muslims access answers grounded in authentic scholarly sources. Our platform aggregates knowledge from the Quran, authentic Hadith, classical Tafsir, and recognized scholarly opinions to provide reliable Islamic guidance.",
-        p2: "Our system operates with strict adherence to authentic Islamic sources. Every response is derived from verified scholarly texts, ensuring that users receive guidance rooted in traditional Islamic scholarship.",
-        disclaimer: "Important: This tool is a learning and reference aid. It is not a substitute for consulting qualified scholars regarding personal or complex matters.",
-        contactTitle: "Contact Us",
-        name: "Name",
-        email: "Email",
-        message: "Message",
-        submit: "Send Message",
-        namePh: "Enter your name",
-        emailPh: "your.email@example.com",
-        messagePh: "Share your thoughts, questions, or feedback...",
-      }
-    : {
-        aboutTitle: "عن نور AI",
-        p1: "نور الذكاء هو أداة مرجعية رقمية مصممة لمساعدة المسلمين في الوصول إلى إجابات مؤسسة على المصادر العلمية الأصيلة. منصتنا تجمع المعرفة من القرآن الكريم والأحاديث الصحيحة والتفاسير الكلاسيكية والآراء العلمية المعتبرة.",
-        p2: "يعمل نظامنا بالالتزام الصارم بالمصادر الإسلامية الأصيلة. كل إجابة مستمدة من النصوص العلمية الموثقة.",
-        disclaimer: "مهم: هذه الأداة هي مساعد تعليمي ومرجعي. وهي ليست بديلاً عن استشارة العلماء المؤهلين في المسائل الشخصية أو المعقدة.",
-        contactTitle: "تواصل معنا",
-        name: "الاسم",
-        email: "البريد الإلكتروني",
-        message: "الرسالة",
-        submit: "إرسال الرسالة",
-        namePh: "أدخل اسمك",
-        emailPh: "your.email@example.com",
-        messagePh: "شاركنا أفكارك...",
-      };
+  const c =
+    language === "en"
+      ? {
+          aboutTitle: `About ${appName}`,
+          p1: `${appName} is a digital reference tool designed to help Muslims access answers grounded in authentic scholarly sources. Our platform aggregates knowledge from the Quran, authentic Hadith, classical Tafsir, and recognized scholarly opinions to provide reliable Islamic guidance.`,
+          p2: "Our system operates with strict adherence to authentic Islamic sources. Every response is derived from verified scholarly texts, ensuring that users receive guidance rooted in traditional Islamic scholarship.",
+          disclaimer:
+            "Important: This tool is a learning and reference aid. It is not a substitute for consulting qualified scholars regarding personal or complex matters.",
+          contactTitle: "Contact Us",
+          name: "Name",
+          email: "Email",
+          message: "Message",
+          submit: "Send Message",
+          namePh: "Enter your name",
+          emailPh: "your.email@example.com",
+          messagePh: "Share your thoughts, questions, or feedback...",
+        }
+      : {
+          aboutTitle: `عن ${appName}`,
+          p1: `${appName} أداة مرجعية رقمية تساعد المسلمين على الوصول إلى إجابات مبنية على مصادر علمية موثوقة من القرآن والسنة والتفاسير المعتمدة وأقوال أهل العلم.`,
+          p2: "يعتمد النظام على مصادر إسلامية أصيلة، وكل إجابة تُبنى على نصوص موثقة لضمان تقديم إرشاد موثوق.",
+          disclaimer: "مهم: هذه الأداة للتعلّم والمراجعة، وليست بديلا عن استشارة العلماء المؤهلين في المسائل الخاصة أو المعقدة.",
+          contactTitle: "تواصل معنا",
+          name: "الاسم",
+          email: "البريد الإلكتروني",
+          message: "الرسالة",
+          submit: "إرسال الرسالة",
+          namePh: "أدخل اسمك",
+          emailPh: "your.email@example.com",
+          messagePh: "شاركنا أفكارك أو أسئلتك أو ملاحظاتك...",
+        };
 
   return (
     <div className="min-h-screen bg-background flex flex-col" dir={isRTL ? "rtl" : "ltr"}>
       <Navbar />
       <main className="flex-1 container mx-auto px-4 py-10 max-w-3xl">
-        {/* Section 1 — About */}
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 bg-card rounded-lg flex items-center justify-center border border-border">
             <Shield className="w-5 h-5 text-gold" />
@@ -70,14 +70,12 @@ const About = () => {
           <p className="text-muted-foreground leading-relaxed mb-4">{c.p1}</p>
           <p className="text-muted-foreground leading-relaxed mb-6">{c.p2}</p>
 
-          {/* Disclaimer */}
           <div className="border-l-4 border-gold bg-gold/5 rounded-r-lg p-4 flex items-start gap-3">
             <Shield className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
             <p className="text-sm text-muted-foreground leading-relaxed">{c.disclaimer}</p>
           </div>
         </div>
 
-        {/* Section 2 — Contact */}
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 bg-card rounded-lg flex items-center justify-center border border-border">
             <Mail className="w-5 h-5 text-gold" />
